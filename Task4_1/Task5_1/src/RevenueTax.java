@@ -4,7 +4,7 @@ public class RevenueTax {
     public static void main(String[] args) {
         double taxPayment;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Введіть свій річний дохід");
+        System.out.println("Введіть свій річний  дохід");
         double income = scanner.nextDouble();
         if (income < 0) {
             System.out.println("Дохід не може бути від’ємним. Введіть коректне значення.");
