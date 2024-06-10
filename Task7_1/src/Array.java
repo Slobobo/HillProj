@@ -61,49 +61,49 @@ public class Array {
     }
 
     public static void min(int[] array) {
-        int min = array[0];
         int minIndex = 0;
         for (int i = 1; i < array.length; i++) {
-            if (array[i] < min) {
-                min = array[i];
+            if (array[i] < array[minIndex]) {
                 minIndex = i;
             }
         }
-        System.out.println("Найменший елемент: " + min + " (з індексом " + minIndex + ")");
+        System.out.println("Найменший елемент: " + array[minIndex] + " (з індексом " + minIndex + ")");
     }
 
     public static void max(int[] array) {
-        int max = array[0];
         int maxIndex = 0;
         for (int i = 1; i < array.length; i++) {
-            if (array[i] > max) {
-                max = array[i];
+            if (array[i] > array[maxIndex]) {
                 maxIndex = i;
+
             }
         }
-        System.out.println("Найбільший елемент: " + max + " (з індексом " + maxIndex + ")");
+        System.out.println("Найбільший елемент: " + array[maxIndex] + " (з індексом " + maxIndex + ")");
 
     }
 
     public static void averageAfterNegative(int[] array) {
-        int sumAfterNeg = 0;
-        int count = 0;
-        boolean findNegative = false;
+        int firstNegativeIndex = -1;
 
-        for (int number : array) {
-            if (findNegative) {
-                sumAfterNeg += number;
-                count++;
-            } else if (number < 0) {
-                findNegative = true;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] < 0) {
+                firstNegativeIndex = i;
+                break;
             }
         }
-
-        if (count > 0) {
-            double averAfterNeg = (double) sumAfterNeg / count;
-            System.out.printf("Середнє арифметичне чисел після першого від'ємного числа: %.2f%n", averAfterNeg);
-        } else {
-            System.out.println("В масиві відсутнє від'ємне число або перше/єдине відємне число є останнім елементом масиву.");
+        if (firstNegativeIndex != -1) {
+            int sum = 0;
+            int count = 0;
+            for (int i = firstNegativeIndex + 1; i < array.length; i++) {
+                sum += array[i];
+                count++;
+            }
+            if (count > 0) {
+                double average = (double) sum / count;
+                System.out.printf("Середнє арифметичне чисел після першого від'ємного числа: %.2f%n", average);
+            } else {
+                System.out.println("В масиві відсутнє від'ємне число або перше/єдине відємне число є останнім елементом масиву.");
+            }
         }
     }
 }
