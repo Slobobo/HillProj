@@ -1,3 +1,5 @@
+package com.gmail.slobodiyan.task7;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Array {

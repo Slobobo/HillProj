@@ -1,3 +1,5 @@
+package com.gmail.slobodiyan.task5;
+
 import java.util.Scanner;
 
 public class RevenueTax {

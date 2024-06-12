@@ -1,3 +1,5 @@
+package com.gmail.slobodiyan.task6;
+
 import java.util.Scanner;
 
 public class NumSum {
