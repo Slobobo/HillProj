@@ -4,20 +4,22 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MultyArray {
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter number of rows and columns: ");
         int row = scanner.nextInt();
         int column = scanner.nextInt();
 
-        int[][] array = generate(row, column);
-        if (array != null) {
-            print(array);
+        int[][] matrix = generate(row, column);
+        if (matrix != null) {
+            print(matrix);
         }
 
-        sumRowOddEven(array);
-        multiplyColumnOddEven(array);
-        if (isMagicSquare(array)) {
+        sumRowOddEven(matrix);
+        productColOddEven(matrix);
+
+        if (isMagicSquare(matrix)) {
             System.out.println("Array is a magic square. Hooray!!!");
         } else {
             System.out.println("Array is not a magic square. Maybe next time(((");
@@ -29,145 +31,162 @@ public class MultyArray {
             System.out.println("Please note, row/column should be above 0. Please provide valid figures!");
             return null;
         } else {
-            int[][] array = new int[row][column];
+            int[][] matrix = new int[row][column];
             for (int i = 0; i < row; i++) {
                 for (int j = 0; j < column; j++) {
-                    array[i][j] = ThreadLocalRandom.current().nextInt(1, 51);
+                    matrix[i][j] = ThreadLocalRandom.current().nextInt(1, 51);
                 }
 
             }
-            return array;
+            return matrix;
         }
     }
 
-    public static void print(int[][] array) {
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                System.out.print(array[i][j] + "\t ");
+    public static void print(int[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(matrix[i][j] + "\t ");
             }
             System.out.println();
         }
     }
 
-    public static void sumRowOddEven(int[][] array) {
-        int rowEvenResult = 0;
-        int rowOddResult = 0;
-        int[][] rowIndices = new int[2][array.length];
-        int evenCount = 0;
-        int oddCount = 0;
+    public static int sumAllRow(int[][] matrix, int initial, int[] rowIndices) {
+        int sum = 0;
+        int count = 0;
 
-        for (int i = 0; i < array.length; i++) {
+        for (int i = initial; i < matrix.length; i += 2) {
             int rowSum = 0;
-            for (int j = 0; j < array[i].length; j++) {
-                rowSum += array[i][j];
+            for (int j = 0; j < matrix[i].length; j++) {
+                rowSum += matrix[i][j];
             }
-            if (i % 2 == 0) {
-                rowEvenResult += rowSum;
-                rowIndices[0][evenCount++] = i;
-            } else {
-                rowOddResult += rowSum;
-                rowIndices[1][oddCount++] = i;
-            }
+            sum += rowSum;
+            rowIndices[count++] = i;
         }
+        return sum;
+    }
+
+    public static void sumRowOddEven(int[][] matrix) {
+
+        int[] evenIndices = new int[matrix.length / 2 + matrix.length % 2];
+        int[] oddIndices = new int[matrix.length / 2];
+        int evenSum = sumAllRow(matrix, 0, evenIndices);
+        int oddSum = sumAllRow(matrix, 1, oddIndices);
         System.out.print("Sum of even rows (row ");
-        for (int i = 0; i < evenCount; i++) {
-            System.out.print(rowIndices[0][i]);
-            if (i < evenCount - 1) {
-                System.out.print(", ");
-            }
-        }
-        System.out.println("): " + rowEvenResult);
+        printRowIndices(evenIndices);
+        System.out.println("): " + evenSum);
 
         System.out.print("Sum of odd rows (row ");
-        for (int i = 0; i < oddCount; i++) {
-            System.out.print(rowIndices[1][i]);
-            if (i < oddCount - 1) {
-                System.out.print(", ");
-            }
-        }
-        System.out.println("): " + rowOddResult);
+        printRowIndices(oddIndices);
+        System.out.println("): " + oddSum);
     }
 
-    public static void multiplyColumnOddEven(int[][] array) {
-        long columnEvenResult = 1;
-        long columnOddResult = 1;
-        int[][] columnIndices = new int[array[0].length][2];
-        int evenCount = 0;
-        int oddCount = 0;
+    public static void printRowIndices(int[] rowIndices) {
+        for (int i = 0; i < rowIndices.length; i++) {
+            if (rowIndices[i] != 0 || i == 0) {
+                System.out.print(rowIndices[i]);
+                if (i < rowIndices.length - 1 && rowIndices[i + 1] != 0) {
+                    System.out.print(", ");
+                }
+            }
+        }
+    }
 
-        for (int j = 0; j < array[0].length; j++) {
+    public static long productAllColumn(int[][] matrix, int initial, int[] colIndices) {
+        long product = 1;
+        int count = 0;
+
+        for (int j = initial; j < matrix[0].length; j += 2) {
             int columnProduct = 1;
-            for (int i = 0; i < array.length; i++) {
-                columnProduct *= array[i][j];
+            for (int i = 0; i < matrix.length; i++) {
+                columnProduct *= matrix[i][j];
             }
-            if (j % 2 == 0) {
-                columnEvenResult *= columnProduct;
-                columnIndices[evenCount++][0] = j;
-            } else {
-                columnOddResult *= columnProduct;
-                columnIndices[oddCount++][1] = j;
-            }
+            product *= columnProduct;
+            colIndices[count++] = j;
         }
+        return product;
+    }
+
+    public static void productColOddEven(int[][] matrix) {
+        int[] evenIndices = new int[matrix[0].length / 2 + matrix[0].length % 2];
+        int[] oddIndices = new int[matrix[0].length / 2];
+
+        long evenProduct = productAllColumn(matrix, 0, evenIndices);
+        long oddProduct = productAllColumn(matrix, 1, oddIndices);
         System.out.print("Product of even columns (column ");
-        for (int i = 0; i < evenCount; i++) {
-            System.out.print(columnIndices[i][0]);
-            if (i < evenCount - 1) {
-                System.out.print(", ");
-            }
-        }
-        System.out.printf("): %,d%n", columnEvenResult);
+        printColIndices(evenIndices);
+        System.out.println("): " + evenProduct);
 
         System.out.print("Product of odd columns (column ");
-        for (int i = 0; i < oddCount; i++) {
-            System.out.print(columnIndices[i][1]);
-            if (i < oddCount - 1) {
-                System.out.print(", ");
-            }
-        }
-        System.out.printf("): %,d%n", columnOddResult);
+        printColIndices(oddIndices);
+        System.out.println("): " + oddProduct);
     }
 
-    public static boolean isMagicSquare(int[][] array) {
-        int n = array.length;
-
-        for (int i = 0; i < n; i++) {
-            if (array[i].length != n) {
-                return false;
-            }
-        }
-        boolean[] seen = new boolean[n * n + 1];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                int num = array[i][j];
-                if (num < 1 || num > n * n || seen[num]) {
-                    return false;
+    public static void printColIndices(int[] collIndices) {
+        for (int i = 0; i < collIndices.length; i++) {
+            if (collIndices[i] != 0 || i == 0) {
+                System.out.print(collIndices[i]);
+                if (i < collIndices.length - 1 && collIndices[i + 1] != 0) {
+                    System.out.print(", ");
                 }
-                seen[num] = true;
             }
         }
-        int magicConstant = n * (n * n + 1) / 2;
+    }
 
-        for (int i = 0; i < n; i++) {
-            int rowSum = 0;
-            int columnSum = 0;
-            for (int j = 0; j < n; j++) {
-                rowSum += array[i][j];
-                columnSum += array[j][i];
-            }
-            if (rowSum != magicConstant || columnSum != magicConstant) {
-                return false;
-            }
+    public static int sumRow(int[][] matrix, int row) {
+        int sum = 0;
+        for (int i = 0; i < matrix[row].length; i++) {
+            sum += matrix[row][i];
         }
-        int diagonalLeftSum = 0;
-        int diagonalRightSum = 0;
-        for (int i = 0; i < n; i++) {
-            diagonalLeftSum += array[i][i];
-            diagonalRightSum += array[i][n - 1 - i];
+        return sum;
+    }
+
+    public static int sumColumn(int[][] matrix, int column) {
+        int sum = 0;
+        for (int j = 0; j < matrix.length; j++) {
+            sum += matrix[j][column];
         }
-        if (diagonalLeftSum != magicConstant || diagonalRightSum != magicConstant) {
+        return sum;
+    }
+
+    public static int sumMainDiagonal(int[][] matrix) {
+        int sum = 0;
+        for (int i = 0; i < matrix.length; i++) {
+            sum += matrix[i][i];
+        }
+        return sum;
+    }
+
+    public static int sumSecondaryDiagonal(int[][] matrix) {
+        int sum = 0;
+        for (int i = 0; i < matrix.length; i++) {
+            sum += matrix[i][matrix.length - 1 - i];
+        }
+        return sum;
+    }
+
+
+    public static boolean isMagicSquare(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix.length != matrix[0].length) {
             return false;
         }
-        return true;
-    }
+        int n = matrix.length;
+        int magicConstant = sumRow(matrix, 0);
 
+        for (int i = 1; i < n; i++) {
+            if (sumRow(matrix, i) != magicConstant) {
+                return false;
+            }
+        }
+
+        for (int j = 0; j < n; j++) {
+            if (sumColumn(matrix, j) != magicConstant) {
+                return false;
+            }
+        }
+        return sumMainDiagonal(matrix) == magicConstant && sumSecondaryDiagonal(matrix) == magicConstant;
+
+    }
 }
+
+
