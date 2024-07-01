@@ -1,11 +1,11 @@
 package com.gmail.slobodiyan.task12;
 
 public class Colleague {
-    String name;
-    String position;
-    String email;
-    String phoneNumber;
-    byte age;
+    private String name;
+    private String position;
+    private String email;
+    private String phoneNumber;
+    private byte age;
 
     public Colleague(String name, String position, String email, String phoneNumber, byte age) {
         this.name = name;
@@ -19,7 +19,7 @@ public class Colleague {
         return name;
     }
 
-    private void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -27,7 +27,7 @@ public class Colleague {
         return position;
     }
 
-    private void setPosition(String position) {
+    public void setPosition(String position) {
         this.position = position;
     }
 
@@ -35,7 +35,7 @@ public class Colleague {
         return email;
     }
 
-    private void setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -43,7 +43,7 @@ public class Colleague {
         return phoneNumber;
     }
 
-    private void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -51,7 +51,7 @@ public class Colleague {
         return age;
     }
 
-    private void setAge(byte age) {
+    public void setAge(byte age) {
         this.age = age;
     }
 
