@@ -1,6 +1,6 @@
 package com.gmail.slobodiyan.task14;
 
-public class PrinterDemo implements Printer {
+public class SimplePrinter implements Printer {
 
     public static class Message {
         private String text;
@@ -47,18 +47,17 @@ public class PrinterDemo implements Printer {
     }
 
     public static void main(String[] args) {
-        Printer printer = new PrinterDemo();
+        Printer printer = new SimplePrinter();
 
-        PrinterDemo.Message message1 = new PrinterDemo.Message("Hi!", "David");
-        PrinterDemo.Message message2 = new PrinterDemo.Message("Hi!", null);
-        PrinterDemo.Message message3 = new PrinterDemo.Message(null, "");
-        PrinterDemo.Message message4 = new PrinterDemo.Message(null, "Alice");
-        PrinterDemo.Message message5 = new PrinterDemo.Message(null, null);
-
-        printer.print(message1);
-        printer.print(message2);
-        printer.print(message3);
-        printer.print(message4);
-        printer.print(message5);
+        SimplePrinter.Message[] messages = {
+                new SimplePrinter.Message("Hi!", "David"),
+                new SimplePrinter.Message("Hi!", null),
+                new SimplePrinter.Message(null, ""),
+                new SimplePrinter.Message(null, "Alice"),
+                new SimplePrinter.Message(null, null),
+        };
+        for (SimplePrinter.Message message : messages) {
+            printer.print(message);
+        }
     }
 }
