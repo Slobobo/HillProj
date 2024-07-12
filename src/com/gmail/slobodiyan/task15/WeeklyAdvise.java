@@ -5,17 +5,17 @@ public class WeeklyAdvise implements Advisor {
     @Override
     public void advice(Day day) {
         switch (day) {
-            case Monday:
-            case Tuesday:
-            case Wednesday:
-            case Thursday:
+            case MONDAY:
+            case TUESDAY:
+            case WEDNESDAY:
+            case THURSDAY:
                 System.out.println("Please focus on your priorities");
                 break;
-            case Friday:
+            case FRIDAY:
                 System.out.println("Happy Friday");
                 break;
-            case Saturday:
-            case Sunday:
+            case SATARDAY:
+            case SUNDAY:
                 System.out.println("Go to the park/swimming pool and have some rest");
                 break;
         }

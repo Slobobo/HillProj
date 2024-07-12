@@ -1,11 +1,11 @@
 package com.gmail.slobodiyan.task15;
 
 public enum Day {
-    Monday,
-    Tuesday,
-    Wednesday,
-    Thursday,
-    Friday,
-    Saturday,
-    Sunday;
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATARDAY,
+    SUNDAY;
 }
